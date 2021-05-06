@@ -8,7 +8,7 @@ class Transport:
     """
     Base transport class
     """
-    number_of_wheels = 0
+    _number_of_wheels = 0
 
     def __init__(self,
                  speed: float,
@@ -40,12 +40,12 @@ class Bicycle(Transport):
     """
     Bicycle transport inheritor
     """
-    number_of_wheels = 2
-    possible_brands = ['TopRider',
+    _number_of_wheels = 2
+    possible_brands = ('TopRider',
                        'Apollo',
                        'Cyclone',
                        'Discovery',
-                       'Formula']
+                       'Formula')
 
     def __init__(self,
                  speed: float,
@@ -83,12 +83,12 @@ class Motorcycle(Bicycle):
     """
     Motorcycle bicycle inheritor
     """
-    number_of_wheels = 2
-    possible_brands = ['BMW',
+    _number_of_wheels = 2
+    possible_brands = ('BMW',
                        'Harley-Davidson',
                        'Honda',
                        'Kawasaki',
-                       'Suzuki']
+                       'Suzuki')
 
     def __init__(self,
                  speed: float,
@@ -125,12 +125,12 @@ class Car(Transport):
     """
     Car transport inheritor
     """
-    number_of_wheels = 4
-    possible_brands = ['Alfa Romeo',
+    _number_of_wheels = 4
+    possible_brands = ('Alfa Romeo',
                        'Hyundai',
                        'Reno',
                        'Opel',
-                       'Mercedes']
+                       'Mercedes')
 
     def __init__(self,
                  speed: float,
@@ -171,13 +171,13 @@ class Plane(Transport):
     """
     Plane transport inheritor
     """
-    number_of_wheels = choice([3, 4, 16, 18])
-    number_of_wings = choice([2, 4])
-    possible_brands = ['Airbus',
+    _number_of_wheels = choice([3, 4, 16, 18])
+    _number_of_wings = choice([2, 4])
+    possible_brands = ('Airbus',
                        'Boeing',
                        'Lockheed Martin',
                        'Northrop Grumman',
-                       'Rolls-Royce Holdings']
+                       'Rolls-Royce Holdings')
 
     def __init__(self,
                  speed: float,
@@ -211,7 +211,43 @@ class Plane(Transport):
               f'Color: {self.color}',
               f'Brand: {self.brand}',
               f'Motor power: {self.motor_power}',
-              f'Count of aircraft wings: {self.number_of_wings}',
+              f'Count of aircraft wings: {self._number_of_wings}',
+              sep='\n')
+
+
+class JetSki(Motorcycle,):
+    """
+    Jet ski  transport and motorcycle inheritor
+    """
+    number_of_wheels = Transport._number_of_wheels
+    possible_brands = Motorcycle.possible_brands
+
+    def __init__(self, speed: float,
+                 weight: float,
+                 color: str,
+                 brand: str,
+                 motor_power: float):
+        """
+        Initializing instance of the jet ski
+        :param speed: float, shows speed of the jet ski
+        :param weight: float, shows weight of the jet ski
+        :param color: str, color of the jet ski
+        :param brand: str, brand of the jet ski
+        :param motor_power: float, shows power of the jet ski motor
+        """
+        super().__init__(speed, weight, color, brand, motor_power)
+
+    def show_info(self):
+        """
+        Shows all attributes of the jet ski instance
+        :return:
+        """
+        print('Jet ski',
+              f'Speed: {self.speed} km/h',
+              f'Weight: {self.weight} kilos',
+              f'Color: {self.color}',
+              f'Brand: {self.brand}',
+              f'Motor power: {self.motor_power}',
               sep='\n')
 
 
@@ -230,3 +266,8 @@ if __name__ == '__main__':
     print()
     something5 = Plane(600, 7.21451e3, 'azure', 'sasdkFJAJF', 98.7)
     something5.show_info()
+    print()
+    something6 = JetSki(320, 72.5, 'yellow', 'sewqeqwe', 98.6)
+    something6.show_info()
+    print(something6.number_of_wheels, something6.possible_brands)
+    print(JetSki.mro())
