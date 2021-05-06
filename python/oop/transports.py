@@ -36,6 +36,43 @@ class Transport:
               sep='\n')
 
 
+class Engine:
+    """
+    Engine base class
+    """
+    possible_category = ('Inline',
+                         'V-type',
+                         'Boxer',
+                         'W-type')
+
+    def __init(self, power: float,
+               torque: float,
+               consumption: float):
+        """
+        Initializing instance of the engine
+        :param power: float, shows power of the engine
+        :param torque: float, shows torque of the engine
+        :param consumption: float, shows specific fuel consumption of the engine
+        :return:
+        """
+        self.power: float = power
+        self.torque: float = torque
+        self.spec_fuel_consumption: float = consumption
+        self.category = choice(self.possible_category)
+
+    def show_info(self):
+        """
+        Shows all attributes of the engine
+        :return:
+        """
+        print('Engine has such characteristics:',
+              f'- power: {self.power}',
+              f'- torque: {self.torque}',
+              f'- specific fuel consumption: {self.spec_fuel_consumption}',
+              f'- category: {self.category}',
+              sep='\n')
+
+
 class Bicycle(Transport):
     """
     Bicycle transport inheritor
@@ -79,9 +116,9 @@ class Bicycle(Transport):
               sep='\n')
 
 
-class Motorcycle(Bicycle):
+class Motorcycle(Bicycle, Engine):
     """
-    Motorcycle bicycle inheritor
+    Motorcycle bicycle and Engine inheritor
     """
     _number_of_wheels = 2
     possible_brands = ('BMW',
@@ -95,17 +132,24 @@ class Motorcycle(Bicycle):
                  weight: float,
                  color: str,
                  brand: str,
-                 motor_power: float):
+                 power: float,
+                 torque: float,
+                 consumption: float):
         """
         Initializing instance of the motorcycle
         :param speed: float, shows speed of the motorcycle
         :param weight: float, shows weight of the motorcycle
         :param color: str, color of the motorcycle
         :param brand: str, brand of the motorcycle
-        :param motor_power: float, shows power of the motorcycle motor
+        :param power: float, shows power of the engine
+        :param torque: float, shows torque of the engine
+        :param consumption: float, shows specific fuel consumption of the engine
         """
         super().__init__(speed, weight, color, brand)
-        self.motor_power = motor_power
+        self.power = power
+        self.torque = torque
+        self.spec_fuel_consumption = consumption
+        self.category = choice(Engine.possible_category)
 
     def show_info(self):
         """
@@ -117,11 +161,11 @@ class Motorcycle(Bicycle):
               f'Weight: {self.weight} kilos',
               f'Color: {self.color}',
               f'Brand: {self.brand}',
-              f'Motor power: {self.motor_power}',
               sep='\n')
+        Engine.show_info(self)
 
 
-class Car(Transport):
+class Car(Transport, Engine):
     """
     Car transport inheritor
     """
@@ -137,21 +181,28 @@ class Car(Transport):
                  weight: float,
                  color: str,
                  brand: str,
-                 motor_power: float):
+                 power: float,
+                 torque: float,
+                 consumption: float):
         """
         Initializing instance of the car
         :param speed: float, shows speed of the car
         :param weight: float, shows weight of the car
         :param color: str, color of the car
         :param brand: str, brand of the car
-        :param motor_power: float, shows power of the car motor
+        :param power: float, shows power of the engine
+        :param torque: float, shows torque of the engine
+        :param consumption: float, shows specific fuel consumption of the engine
         """
         super().__init__(speed, weight, color)
         if brand in self.possible_brands:
             self.brand = brand
         else:
             self.brand = choice(self.possible_brands)
-        self.motor_power: float = motor_power
+        self.power = power
+        self.torque = torque
+        self.spec_fuel_consumption = consumption
+        self.category = choice(Engine.possible_category)
 
     def show_info(self):
         """
@@ -163,11 +214,11 @@ class Car(Transport):
               f'Weight: {self.weight} kilos',
               f'Color: {self.color}',
               f'Brand: {self.brand}',
-              f'Motor power: {self.motor_power}',
               sep='\n')
+        Engine.show_info(self)
 
 
-class Plane(Transport):
+class Plane(Transport, Engine):
     """
     Plane transport inheritor
     """
@@ -184,21 +235,28 @@ class Plane(Transport):
                  weight: float,
                  color: str,
                  brand: str,
-                 motor_power: float):
+                 power: float,
+                 torque: float,
+                 consumption: float):
         """
         Initializing instance of the plane
         :param speed: float, shows speed of the plane
         :param weight: float, shows weight of the plane
         :param color: str, color of the plane
         :param brand: str, brand of the plane
-        :param motor_power: float, shows power of the plane motor
+        :param power: float, shows power of the engine
+        :param torque: float, shows torque of the engine
+        :param consumption: float, shows specific fuel consumption of the engine
         """
         super().__init__(speed, weight, color)
         if brand in self.possible_brands:
             self.brand = brand
         else:
             self.brand = choice(self.possible_brands)
-        self.motor_power: float = motor_power
+        self.power = power
+        self.torque = torque
+        self.spec_fuel_consumption = consumption
+        self.category = choice(Engine.possible_category)
 
     def show_info(self):
         """
@@ -210,12 +268,12 @@ class Plane(Transport):
               f'Weight: {self.weight} kilos',
               f'Color: {self.color}',
               f'Brand: {self.brand}',
-              f'Motor power: {self.motor_power}',
               f'Count of aircraft wings: {self._number_of_wings}',
               sep='\n')
+        Engine.show_info(self)
 
 
-class JetSki(Motorcycle,):
+class JetSki(Motorcycle):
     """
     Jet ski  transport and motorcycle inheritor
     """
@@ -226,16 +284,20 @@ class JetSki(Motorcycle,):
                  weight: float,
                  color: str,
                  brand: str,
-                 motor_power: float):
+                 power: float,
+                 torque: float,
+                 consumption: float):
         """
         Initializing instance of the jet ski
         :param speed: float, shows speed of the jet ski
         :param weight: float, shows weight of the jet ski
         :param color: str, color of the jet ski
         :param brand: str, brand of the jet ski
-        :param motor_power: float, shows power of the jet ski motor
+        :param power: float, shows power of the engine
+        :param torque: float, shows torque of the engine
+        :param consumption: float, shows specific fuel consumption of the engine
         """
-        super().__init__(speed, weight, color, brand, motor_power)
+        super().__init__(speed, weight, color, brand, power, torque, consumption)
 
     def show_info(self):
         """
@@ -247,8 +309,8 @@ class JetSki(Motorcycle,):
               f'Weight: {self.weight} kilos',
               f'Color: {self.color}',
               f'Brand: {self.brand}',
-              f'Motor power: {self.motor_power}',
               sep='\n')
+        Engine.show_info(self)
 
 
 if __name__ == '__main__':
@@ -258,16 +320,16 @@ if __name__ == '__main__':
     something2 = Bicycle(20, 15.7, 'blue', 'adspf')
     something2.show_info()
     print()
-    something3 = Motorcycle(320, 82.5, 'black', 'seqweqw', 98.7)
+    something3 = Motorcycle(320, 82.5, 'black', 'seqweqw', 120.5, 150.2, 102.5)
     something3.show_info()
     print()
-    something4 = Car(290, 24.13584e3, 'white', 'seqweqw', 98.7)
+    print(Motorcycle.__mro__)
+    something4 = Car(290, 24.13584e3, 'white', 'seqweqw', 120.5, 150.2, 102.5)
     something4.show_info()
     print()
-    something5 = Plane(600, 7.21451e3, 'azure', 'sasdkFJAJF', 98.7)
+    something5 = Plane(600, 7.21451e3, 'azure', 'sasdkFJAJF', 120.5, 150.2, 102.5)
     something5.show_info()
     print()
-    something6 = JetSki(320, 72.5, 'yellow', 'sewqeqwe', 98.6)
+    something6 = JetSki(320, 72.5, 'yellow', 'sewqeqwe', 120.5, 150.2, 102.5)
     something6.show_info()
-    print(something6.number_of_wheels, something6.possible_brands)
-    print(JetSki.mro())
+    print(JetSki.__mro__)
