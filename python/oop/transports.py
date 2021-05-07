@@ -14,6 +14,7 @@ class Transport:
                  *args):
         """
         Initializing instance of the class
+
         :param args: Arguments that will be parsed
         """
         self.speed: float = float()
@@ -21,20 +22,19 @@ class Transport:
         self.color: str = str()
         self.parse_arguments(*args)
 
-    def show_info(self):
+    def __str__(self):
         """
         Shows all attributes of the transport instance
+
         :return:
         """
-        print('Transport',
-              f'Speed: {self.speed} km/h',
-              f'Weight: {self.weight} kilos',
-              f'Color: {self.color}',
-              sep='\n')
+        return 'Transport\n' + f'Speed: {self.speed} km/h\n' + \
+               f'Weight: {self.weight} kilos\n' + f'Color: {self.color}\n'
 
     def parse_arguments(self, *args):
         """
         Parsing arguments to avoid pylint mistakes with too much arguments
+
         :param args:
         :return:
         """
@@ -56,6 +56,7 @@ class Engine:
     def __init__(self, *args):
         """
         Initializing instance of the engine
+
         :param args: Arguments that will be parsed
         :return:
         """
@@ -64,20 +65,19 @@ class Engine:
         self.category = choice(self.possible_category)
         self.parse_arguments(*args)
 
-    def show_info(self):
+    def __str__(self):
         """
         Shows all attributes of the engine
+
         :return:
         """
-        print('Engine has such characteristics:',
-              f'- power: {self.power}',
-              f'- torque: {self.torque}',
-              f'- category: {self.category}',
-              sep='\n')
+        return 'Engine has such characteristics:\n' + f'- power: {self.power}\n' + \
+               f'- torque: {self.torque}\n' + f'- category: {self.category}\n'
 
     def parse_arguments(self, *args):
         """
         Parsing arguments to avoid pylint mistakes with too much arguments
+
         :param args:
         :return:
         """
@@ -100,6 +100,7 @@ class Bicycle(Transport):
     def __init__(self, *args):
         """
         Initializing instance of the bicycle
+
         :param speed: float, shows speed of the bicycle
         :param weight: float, shows weight of the bicycle
         :param color: str, color of the bicycle
@@ -109,17 +110,15 @@ class Bicycle(Transport):
         if self.brand not in self.possible_brands:
             self.brand = choice(self.possible_brands)
 
-    def show_info(self):
+    def __str__(self):
         """
         Shows all attributes of the bicycle instance
+
         :return:
         """
-        print('Bicycle',
-              f'Speed: {self.speed} km/h',
-              f'Weight: {self.weight} kilos',
-              f'Color: {self.color}',
-              f'Brand: {self.brand}',
-              sep='\n')
+        return 'Bicycle\n' + f'Speed: {self.speed} km/h\n' + \
+               f'Weight: {self.weight} kilos\n' + f'Color: {self.color}\n' + \
+               f'Brand: {self.brand}\n'
 
     def parse_arguments(self, *args):
         assert len(args) == 4
@@ -139,22 +138,21 @@ class Motorcycle(Bicycle, Engine):
                        'Kawasaki',
                        'Suzuki')
 
-    def show_info(self):
+    def __str__(self):
         """
         Shows all attributes of the motorcycle instance
+
         :return:
         """
-        print('Motorcycle',
-              f'Speed: {self.speed} km/h',
-              f'Weight: {self.weight} kilos',
-              f'Color: {self.color}',
-              f'Brand: {self.brand}',
-              sep='\n')
-        Engine.show_info(self)
+        engine_chars = Engine.__str__(self)
+        return 'Motorcycle\n' + f'Speed: {self.speed} km/h\n' + \
+               f'Weight: {self.weight} kilos\n' + f'Color: {self.color}\n' + \
+               f'Brand: {self.brand}\n' + engine_chars
 
     def parse_arguments(self, *args):
         """
         Parsing arguments to avoid pylint mistakes with too much arguments
+
         :param args:
         :return:
         """
@@ -182,6 +180,7 @@ class Car(Transport, Engine):
     def __init__(self, *args):
         """
         Initializing instance of the car
+
         :param speed: float, shows speed of the car
         :param weight: float, shows weight of the car
         :param color: str, color of the car
@@ -193,22 +192,21 @@ class Car(Transport, Engine):
         if self.brand not in self.possible_brands:
             self.brand = choice(self.possible_brands)
 
-    def show_info(self):
+    def __str__(self):
         """
         Shows all attributes of the car instance
+
         :return:
         """
-        print('Car',
-              f'Speed: {self.speed} km/h',
-              f'Weight: {self.weight} kilos',
-              f'Color: {self.color}',
-              f'Brand: {self.brand}',
-              sep='\n')
-        Engine.show_info(self)
+        engine_chars = Engine.__str__(self)
+        return 'Car\n' + f'Speed: {self.speed} km/h\n' + \
+               f'Weight: {self.weight} kilos\n' + f'Color: {self.color}\n' + \
+               f'Brand: {self.brand}\n' + engine_chars
 
     def parse_arguments(self, *args):
         """
         Parsing arguments to avoid pylint mistakes with too much arguments
+
         :param args:
         :return:
         """
@@ -237,6 +235,7 @@ class Plane(Transport, Engine):
     def __init__(self, *args):
         """
         Initializing instance of the plane
+
         :param speed: float, shows speed of the plane
         :param weight: float, shows weight of the plane
         :param color: str, color of the plane
@@ -249,23 +248,22 @@ class Plane(Transport, Engine):
         if self.brand not in self.possible_brands:
             self.brand = choice(self.possible_brands)
 
-    def show_info(self):
+    def __str__(self):
         """
         Shows all attributes of the plane instance
+
         :return:
         """
-        print('Plane',
-              f'Speed: {self.speed} km/h',
-              f'Weight: {self.weight} kilos',
-              f'Color: {self.color}',
-              f'Brand: {self.brand}',
-              f'Count of aircraft wings: {self.number_of_wings}',
-              sep='\n')
-        Engine.show_info(self)
+        engine_chars = Engine.__str__(self)
+        return 'Plane\n' + f'Speed: {self.speed} km/h\n' + \
+               f'Weight: {self.weight} kilos\n' + f'Color: {self.color}\n' + \
+               f'Brand: {self.brand}\n' + f'Count of aircraft wings: {self.number_of_wings}\n' + \
+               engine_chars
 
     def parse_arguments(self, *args):
         """
         Parsing arguments to avoid pylint mistakes with too much arguments
+
         :param args:
         :return:
         """
@@ -286,22 +284,21 @@ class JetSki(Motorcycle):
     number_of_wheels = Transport.number_of_wheels
     possible_brands = Motorcycle.possible_brands
 
-    def show_info(self):
+    def __str__(self):
         """
         Shows all attributes of the jet ski instance
+
         :return:
         """
-        print('Jet ski',
-              f'Speed: {self.speed} km/h',
-              f'Weight: {self.weight} kilos',
-              f'Color: {self.color}',
-              f'Brand: {self.brand}',
-              sep='\n')
-        Engine.show_info(self)
+        engine_chars = Engine.__str__(self)
+        return 'Jet ski\n' + f'Speed: {self.speed} km/h\n' + \
+               f'Weight: {self.weight} kilos\n' + f'Color: {self.color}\n' + \
+               f'Brand: {self.brand}\n' + engine_chars
 
     def parse_arguments(self, *args):
         """
         Parsing arguments to avoid pylint mistakes with too much arguments
+
         :param args:
         :return:
         """
@@ -317,21 +314,16 @@ class JetSki(Motorcycle):
 
 if __name__ == '__main__':
     something1 = Transport(45, 23.5, 'red')
-    something1.show_info()
-    print()
+    print(something1)
     something2 = Bicycle(20, 15.7, 'blue', 'asap')
-    something2.show_info()
-    print()
+    print(something2)
     something3 = Motorcycle(320, 82.5, 'black', 'seqweqw', 120.5, 150.2)
-    something3.show_info()
-    print()
+    print(something3)
     # print(Motorcycle.__mro__)
     something4 = Car(290, 24.13584e3, 'white', 'seqweqw', 120.5, 150.2)
-    something4.show_info()
-    print()
+    print(something4)
     something5 = Plane(600, 7.21451e3, 'azure', 'sasdkFJAJF', 120.5, 150.2)
-    something5.show_info()
-    print()
+    print(something5)
     something6 = JetSki(320, 72.5, 'yellow', 'sewqeqwe', 120.5, 150.2)
-    something6.show_info()
+    print(something6)
     # print(JetSki.__mro__)
