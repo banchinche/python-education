@@ -119,6 +119,14 @@ class Transport:
                 f' - weight: '
                 f'{"greater or equal" if self.weight >= other.weight else "less or equal"}']
 
+    @classmethod
+    def get_wheels(cls):
+        """
+        Getting static class attribute that shows number of wheels
+        :return:
+        """
+        return cls._number_of_wheels
+
     def parse_arguments(self, *args):
         """
         Parsing arguments to avoid pylint mistakes with too much arguments
@@ -150,7 +158,7 @@ class Engine:
         """
         self.power: float = float()
         self.torque: float = float()
-        self.category = choice(self._possible_category)
+        self.category = choice(self.get_category())
         self.parse_arguments(*args)
 
     def __str__(self):
@@ -161,6 +169,14 @@ class Engine:
         """
         return 'Engine has such characteristics:\n' + f'- power: {self.power}\n' + \
                f'- torque: {self.torque}\n' + f'- category: {self.category}\n'
+
+    @classmethod
+    def get_category(cls):
+        """
+        Getting static class attribute that shows category of engine
+        :return:
+        """
+        return cls._possible_category
 
     def parse_arguments(self, *args):
         """
@@ -208,6 +224,14 @@ class Bicycle(Transport):
                f'Weight: {self.weight} kilos\n' + f'Color: {self.color}\n' + \
                f'Brand: {self.brand}\n'
 
+    @classmethod
+    def get_brand(cls):
+        """
+        Getting static class attribute that shows brand
+        :return:
+        """
+        return cls._possible_brands
+
     def parse_arguments(self, *args):
         assert len(args) == 4
         self.speed = args[0]
@@ -251,7 +275,7 @@ class Motorcycle(Bicycle, Engine):
         self.brand = args[3]
         self.power = args[4]
         self.torque = args[5]
-        self.category = choice(self._possible_category)
+        self.category = choice(self.get_category())
 
 
 class Car(Transport, Engine):
@@ -278,7 +302,7 @@ class Car(Transport, Engine):
         """
         super().__init__(*args)
         if self.brand not in self._possible_brands:
-            self.brand = choice(self._possible_brands)
+            self.brand = choice(self.get_brand())
 
     def __str__(self):
         """
@@ -412,6 +436,14 @@ class Car(Transport, Engine):
                 f'{"greater" if self.torque >= other.torque else "less"}'
                 ]
 
+    @classmethod
+    def get_brand(cls):
+        """
+        Getting static class attribute that shows brand
+        :return:
+        """
+        return cls._possible_brands
+
     def parse_arguments(self, *args):
         """
         Parsing arguments to avoid pylint mistakes with too much arguments
@@ -455,7 +487,7 @@ class Plane(Transport, Engine):
 
         super().__init__(*args)
         if self.brand not in self._possible_brands:
-            self.brand = choice(self._possible_brands)
+            self.brand = choice(self.get_brand())
 
     def __str__(self):
         """
@@ -466,8 +498,24 @@ class Plane(Transport, Engine):
         engine_chars = Engine.__str__(self)
         return 'Plane\n' + f'Speed: {self.speed} km/h\n' + \
                f'Weight: {self.weight} kilos\n' + f'Color: {self.color}\n' + \
-               f'Brand: {self.brand}\n' + f'Count of aircraft wings: {self._number_of_wings}\n' + \
+               f'Brand: {self.brand}\n' + f'Count of aircraft wings: {self.get_wings()}\n' + \
                engine_chars
+
+    @classmethod
+    def get_brand(cls):
+        """
+        Getting static class attribute that shows brand
+        :return:
+        """
+        return cls._possible_brands
+
+    @classmethod
+    def get_wings(cls):
+        """
+        Getting static class attribute that shows number of wings
+        :return:
+        """
+        return cls._number_of_wings
 
     def parse_arguments(self, *args):
         """
@@ -483,15 +531,15 @@ class Plane(Transport, Engine):
         self.brand = args[3]
         self.power = args[4]
         self.torque = args[5]
-        self.category = choice(self._possible_category)
+        self.category = choice(self.get_category())
 
 
 class JetSki(Motorcycle):
     """
     Jet ski  transport and motorcycle inheritor
     """
-    _number_of_wheels = Transport._number_of_wheels
-    _possible_brands = Motorcycle._possible_brands
+    _number_of_wheels = Transport.get_wheels()
+    _possible_brands = Motorcycle.get_brand()
 
     def __str__(self):
         """
@@ -518,7 +566,7 @@ class JetSki(Motorcycle):
         self.brand = args[3]
         self.power = args[4]
         self.torque = args[5]
-        self.category = choice(self._possible_category)
+        self.category = choice(self.get_category())
 
 
 if __name__ == '__main__':
