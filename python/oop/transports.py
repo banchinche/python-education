@@ -1,14 +1,16 @@
 """
 Transport classes inherited from the base 'Transport'
 """
+from abc import ABC, abstractmethod
 from random import choice
 
 
-class Transport:
+class Transport(ABC):
     """
     Base transport class
     """
     _number_of_wheels = 0
+    _possible_brands = tuple()
 
     def __init__(self,
                  *args):
@@ -22,102 +24,62 @@ class Transport:
         self.color: str = str()
         self.parse_arguments(*args)
 
+    @property
+    def p_color(self):
+        """
+        Color getter
+        :return:
+        """
+        return self.color
+
+    @p_color.setter
+    def p_color(self, color: str):
+        self.color = color
+
+    @p_color.deleter
+    def p_color(self):
+        self.color = 'no color'
+
+    @abstractmethod
     def __str__(self):
-        """
-        Shows all attributes of the transport instance
+        pass
 
-        :return:
-        """
-        return 'Transport\n' + f'Speed: {self.speed} km/h\n' + \
-               f'Weight: {self.weight} kilos\n' + f'Color: {self.color}\n'
-
+    @abstractmethod
     def __call__(self, *args, **kwargs):
-        """
-        Changes float values of the instance calling that one
+        pass
 
-        :param args: new values to change
-        :param kwargs:
-        :return:
-        """
-        self.speed, self.weight = args[0], args[1]
-
+    @abstractmethod
     def __eq__(self, other):
-        """
-        Equality check
+        pass
 
-        :param other: another instance of the Transport
-        :return:
-        """
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return all([self.speed == other.speed,
-                    self.weight == other.weight,
-                    self.color == other.color])
-
+    @abstractmethod
     def __ne__(self, other):
-        """
-        Inequality check
+        pass
 
-        :param other: another instance of the Transport
-        :return:
-        """
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return all([self.speed != other.speed,
-                    self.weight != other.weight,
-                    self.color != other.color])
-
+    @abstractmethod
     def __lt__(self, other):
-        """
-        Less than check
+        pass
 
-        :param other: another instance of the Transport
-        :return:
-        """
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return [f' - speed: {"less" if self.speed < other.speed else "greater"}',
-                f' - weight: {"less" if self.weight < other.weight else "greater"}']
-
+    @abstractmethod
     def __le__(self, other):
-        """
-        Less or equal check
+        pass
 
-        :param other: another instance of the Transport
-        :return:
-        """
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return [f' - speed: '
-                f'{"less or equal" if self.speed <= other.speed else "greater or equal"}',
-                f' - weight: '
-                f'{"less or equal" if self.weight <= other.weight else "greater or equal"}']
-
+    @abstractmethod
     def __gt__(self, other):
-        """
-        Greater than check
+        pass
 
-        :param other: another instance of the Transport
-        :return:
-        """
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return [f' - speed: {"greater" if self.speed > other.speed else "less"}',
-                f' - weight: {"greater" if self.weight > other.weight else "less"}']
-
+    @abstractmethod
     def __ge__(self, other):
-        """
-        Greater or equal check
+        pass
 
-        :param other: another instance of the Transport
+    @abstractmethod
+    def parse_arguments(self, *args):
+        """
+        Parsing arguments to avoid pylint mistakes with too much arguments
+
+        :param args:
         :return:
         """
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return [f' - speed: '
-                f'{"greater or equal" if self.speed >= other.speed else "less or equal"}',
-                f' - weight: '
-                f'{"greater or equal" if self.weight >= other.weight else "less or equal"}']
 
     @classmethod
     def get_wheels(cls):
@@ -127,17 +89,13 @@ class Transport:
         """
         return cls._number_of_wheels
 
-    def parse_arguments(self, *args):
+    @classmethod
+    def get_brand(cls):
         """
-        Parsing arguments to avoid pylint mistakes with too much arguments
-
-        :param args:
+        Getting static class attribute that shows brand
         :return:
         """
-        assert len(args) == 3
-        self.speed = args[0]
-        self.weight = args[1]
-        self.color = args[2]
+        return cls._possible_brands
 
 
 class Engine:
@@ -224,6 +182,96 @@ class Bicycle(Transport):
                f'Weight: {self.weight} kilos\n' + f'Color: {self.color}\n' + \
                f'Brand: {self.brand}\n'
 
+    def __call__(self, *args, **kwargs):
+        """
+        Changes float values of the instance calling that one
+
+        :param args: new values to change
+        :param kwargs:
+        :return:
+        """
+        self.speed, self.weight = args[0], args[1]
+
+    def __eq__(self, other):
+        """
+        Equality check
+
+        :param other: another instance of the Bicycle
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return all([self.speed == other.speed,
+                    self.weight == other.weight,
+                    self.color == other.color,
+                    self.brand == other.brand])
+
+    def __ne__(self, other):
+        """
+        Inequality check
+
+        :param other: another instance of the Bicycle
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return all([self.speed != other.speed,
+                    self.weight != other.weight,
+                    self.color != other.color,
+                    self.brand != other.brand])
+
+    def __lt__(self, other):
+        """
+        Less than check
+
+        :param other: another instance of the Bicycle
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return [f' - speed: {"less" if self.speed < other.speed else "greater"}',
+                f' - weight: {"less" if self.weight < other.weight else "greater"}']
+
+    def __le__(self, other):
+        """
+        Less or equal check
+
+        :param other: another instance of the Bicycle
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return [f' - speed: '
+                f'{"less or equal" if self.speed <= other.speed else "greater or equal"}',
+                f' - weight: '
+                f'{"less or equal" if self.weight <= other.weight else "greater or equal"}']
+
+    def __gt__(self, other):
+        """
+        Greater than check
+
+        :param other: another instance of the Bicycle
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return [f' - speed: {"greater" if self.speed > other.speed else "less"}',
+                f' - weight: {"greater" if self.weight > other.weight else "less"}']
+
+    def __ge__(self, other):
+        """
+        Greater or equal check
+
+        :param other: another instance of the Bicycle
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return [f' - speed: '
+                f'{"greater or equal" if self.speed >= other.speed else "less or equal"}',
+                f' - weight: '
+                f'{"greater or equal" if self.weight >= other.weight else "less or equal"}']
+
     @classmethod
     def get_brand(cls):
         """
@@ -260,6 +308,127 @@ class Motorcycle(Bicycle, Engine):
         return 'Motorcycle\n' + f'Speed: {self.speed} km/h\n' + \
                f'Weight: {self.weight} kilos\n' + f'Color: {self.color}\n' + \
                f'Brand: {self.brand}\n' + engine_chars
+
+    def __call__(self, *args, **kwargs):
+        """
+        Changes float values of the instance calling that one
+
+        :param args: new values to change
+        :param kwargs:
+        :return:
+        """
+        self.speed = args[0]
+        self.weight = args[1]
+        self.power = args[2]
+        self.torque = args[3]
+
+    def __eq__(self, other):
+        """
+        Equality check
+
+        :param other: another instance of the Motorcycle
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return all([self.speed == other.speed,
+                    self.weight == other.weight,
+                    self.color == other.color,
+                    self.brand == other.brand,
+                    self.power == other.power,
+                    self.torque == other.torque])
+
+    def __ne__(self, other):
+        """
+        Inequality check
+
+        :param other: another instance of the Motorcycle
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return all([self.speed != other.speed,
+                    self.weight != other.weight,
+                    self.color != other.color,
+                    self.brand != other.brand,
+                    self.power != other.power,
+                    self.torque != other.torque])
+
+    def __lt__(self, other):
+        """
+        Less than check
+
+        :param other: another instance of the Motorcycle
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return [f' - speed: '
+                f'{"less" if self.speed < other.speed else "greater"}',
+                f' - weight: '
+                f'{"less" if self.weight < other.weight else "greater"}',
+                f' - power: '
+                f'{"less" if self.power < other.power else "greater"}',
+                f' - torque: '
+                f'{"less" if self.torque < other.torque else "greater"}'
+                ]
+
+    def __le__(self, other):
+        """
+        Less or equal check
+
+        :param other: another instance of the Motorcycle
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return [f' - speed: '
+                f'{"less or equal" if self.speed <= other.speed else "greater or equal"}',
+                f' - weight: '
+                f'{"less or equal" if self.weight <=other.weight else "greater or equal"}',
+                f' - power: '
+                f'{"less or equal" if self.power <= other.power else "greater or equal"}',
+                f' - torque: '
+                f'{"less or equal" if self.torque <= other.torque else "greater or equal"}'
+                ]
+
+    def __gt__(self, other):
+        """
+        Greater than check
+
+        :param other: another instance of the Motorcycle
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return [f' - speed: '
+                f'{"greater" if self.speed > other.speed else "less"}',
+                f' - weight: '
+                f'{"greater" if self.weight > other.weight else "less"}',
+                f' - power: '
+                f'{"greater" if self.power > other.power else "less"}',
+                f' - torque: '
+                f'{"greater" if self.torque > other.torque else "less"}'
+                ]
+
+    def __ge__(self, other):
+        """
+        Greater or equal check
+
+        :param other: another instance of the Motorcycle
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return [f' - speed: '
+                f'{"greater or equal" if self.speed >= other.speed else "less or equal"}',
+                f' - weight: '
+                f'{"greater or equal" if self.weight >= other.weight else "less or equal"}',
+                f' - power: '
+                f'{"greater or equal" if self.power >= other.power else "less or equal"}',
+                f' - torque: '
+                f'{"greater or equal" if self.torque >= other.torque else "less or equal"}'
+                ]
 
     def parse_arguments(self, *args):
         """
@@ -375,7 +544,7 @@ class Car(Transport, Engine):
                 f'{"less" if self.weight < other.weight else "greater"}',
                 f' - power: '
                 f'{"less" if self.power < other.power else "greater"}',
-                f' - weight: '
+                f' - torque: '
                 f'{"less" if self.torque < other.torque else "greater"}'
                 ]
 
@@ -389,13 +558,13 @@ class Car(Transport, Engine):
         if not isinstance(other, self.__class__):
             return NotImplemented
         return [f' - speed: '
-                f'{"less" if self.speed <= other.speed else "greater"}',
+                f'{"less or equal" if self.speed <= other.speed else "greater or equal"}',
                 f' - weight: '
-                f'{"less" if self.weight <=other.weight else "greater"}',
+                f'{"less or equal" if self.weight <=other.weight else "greater or equal"}',
                 f' - power: '
-                f'{"less" if self.power <= other.power else "greater"}',
-                f' - weight: '
-                f'{"less" if self.torque <= other.torque else "greater"}'
+                f'{"less or equal" if self.power <= other.power else "greater or equal"}',
+                f' - torque: '
+                f'{"less or equal" if self.torque <= other.torque else "greater or equal"}'
                 ]
 
     def __gt__(self, other):
@@ -413,7 +582,7 @@ class Car(Transport, Engine):
                 f'{"greater" if self.weight > other.weight else "less"}',
                 f' - power: '
                 f'{"greater" if self.power > other.power else "less"}',
-                f' - weight: '
+                f' - torque: '
                 f'{"greater" if self.torque > other.torque else "less"}'
                 ]
 
@@ -427,13 +596,13 @@ class Car(Transport, Engine):
         if not isinstance(other, self.__class__):
             return NotImplemented
         return [f' - speed: '
-                f'{"greater" if self.speed >= other.speed else "less"}',
+                f'{"greater or equal" if self.speed >= other.speed else "less or equal"}',
                 f' - weight: '
-                f'{"greater" if self.weight >= other.weight else "less"}',
+                f'{"greater or equal" if self.weight >= other.weight else "less or equal"}',
                 f' - power: '
-                f'{"greater" if self.power >= other.power else "less"}',
-                f' - weight: '
-                f'{"greater" if self.torque >= other.torque else "less"}'
+                f'{"greater or equal" if self.power >= other.power else "less or equal"}',
+                f' - torque: '
+                f'{"greater or equal" if self.torque >= other.torque else "less or equal"}'
                 ]
 
     @classmethod
@@ -500,6 +669,127 @@ class Plane(Transport, Engine):
                f'Weight: {self.weight} kilos\n' + f'Color: {self.color}\n' + \
                f'Brand: {self.brand}\n' + f'Count of aircraft wings: {self.get_wings()}\n' + \
                engine_chars
+
+    def __call__(self, *args, **kwargs):
+        """
+        Changes float values of the instance calling that one
+
+        :param args: new values to change
+        :param kwargs:
+        :return:
+        """
+        self.speed = args[0]
+        self.weight = args[1]
+        self.power = args[2]
+        self.torque = args[3]
+
+    def __eq__(self, other):
+        """
+        Equality check
+
+        :param other: another instance of the Plane
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return all([self.speed == other.speed,
+                    self.weight == other.weight,
+                    self.color == other.color,
+                    self.brand == other.brand,
+                    self.power == other.power,
+                    self.torque == other.torque])
+
+    def __ne__(self, other):
+        """
+        Inequality check
+
+        :param other: another instance of the Plane
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return all([self.speed != other.speed,
+                    self.weight != other.weight,
+                    self.color != other.color,
+                    self.brand != other.brand,
+                    self.power != other.power,
+                    self.torque != other.torque])
+
+    def __lt__(self, other):
+        """
+        Less than check
+
+        :param other: another instance of the Plane
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return [f' - speed: '
+                f'{"less" if self.speed < other.speed else "greater"}',
+                f' - weight: '
+                f'{"less" if self.weight < other.weight else "greater"}',
+                f' - power: '
+                f'{"less" if self.power < other.power else "greater"}',
+                f' - torque: '
+                f'{"less" if self.torque < other.torque else "greater"}'
+                ]
+
+    def __le__(self, other):
+        """
+        Less or equal check
+
+        :param other: another instance of the Plane
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return [f' - speed: '
+                f'{"less or equal" if self.speed <= other.speed else "greater or equal"}',
+                f' - weight: '
+                f'{"less or equal" if self.weight <=other.weight else "greater or equal"}',
+                f' - power: '
+                f'{"less or equal" if self.power <= other.power else "greater or equal"}',
+                f' - torque: '
+                f'{"less or equal" if self.torque <= other.torque else "greater or equal"}'
+                ]
+
+    def __gt__(self, other):
+        """
+        Greater than check
+
+        :param other: another instance of the Plane
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return [f' - speed: '
+                f'{"greater" if self.speed > other.speed else "less"}',
+                f' - weight: '
+                f'{"greater" if self.weight > other.weight else "less"}',
+                f' - power: '
+                f'{"greater" if self.power > other.power else "less"}',
+                f' - torque: '
+                f'{"greater" if self.torque > other.torque else "less"}'
+                ]
+
+    def __ge__(self, other):
+        """
+        Greater or equal check
+
+        :param other: another instance of the Plane
+        :return:
+        """
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return [f' - speed: '
+                f'{"greater or equal" if self.speed >= other.speed else "less or equal"}',
+                f' - weight: '
+                f'{"greater or equal" if self.weight >= other.weight else "lessor equal"}',
+                f' - power: '
+                f'{"greater or equal" if self.power >= other.power else "less or equal"}',
+                f' - torque: '
+                f'{"greater or equal" if self.torque >= other.torque else "less or equal"}'
+                ]
 
     @classmethod
     def get_brand(cls):
@@ -570,8 +860,8 @@ class JetSki(Motorcycle):
 
 
 if __name__ == '__main__':
-    something1 = Transport(45, 23.5, 'red')
-    print(something1)
+    # something1 = Transport(45, 23.5, 'red')
+    # print(something1)
     something2 = Bicycle(20, 15.7, 'blue', 'asap')
     print(something2)
     something3 = Motorcycle(320, 82.5, 'black', 'seqweqw', 120.5, 150.2)
@@ -585,27 +875,20 @@ if __name__ == '__main__':
     print(something6)
     # print(JetSki.__mro__)
 
-    # At first, compare two instances with equal attributes
-    first_trans = Transport(45, 23.5, 'red')
-    second_trans = Transport(45, 23.5, 'red')
-    print('\nEquality of two instances:', first_trans == second_trans)
-    # Change values of the first instance to lower than all second's
-    first_trans(22, 20)
-    # Less and less or equal check (1 < 2, 1 <= 2)
-    print('\nLess than another:', *(first_trans < second_trans), sep='\n')
-    print('\nLess or equal to another:', *(first_trans <= second_trans), sep='\n')
-    # Greater and greater or equal check (2 > 1, 2 >= 1)
-    print('\nAnother greater than first:', *(second_trans > first_trans), sep='\n')
-    print('\nAnother greater or equal to first:', *(second_trans >= first_trans), sep='\n')
-    # Looking at the magic methods inherited from Transport in Bicycle,
-    # compare two instances with equal attributes
+    # Property task
+    print('Property checking in the JetSki Transport-inheritor:', something6.p_color)
+    # Changing color
+    something6.p_color = 'another color'
+    print('Changed to another color:', something6.p_color)
+    del something6.p_color
+    print('Deleted color:', something6.p_color)
 
-    first_bicycle = Bicycle(45, 23.5, 'red', 'asap')
-    second_bicycle = Bicycle(45, 23.5, 'red', 'asap')
+    # Showing magic methods in Bicycle, inheritor of the abstract Transport
+    first_bicycle = Bicycle(45, 23.5, 'red', 'TopRider')
+    second_bicycle = Bicycle(45, 23.5, 'red', 'TopRider')
     print('\nEquality of two instances:', first_bicycle == second_bicycle)
 
     first_bicycle(22, 20)
-
     print('\nLess than another:', *(first_bicycle < second_bicycle), sep='\n')
     print('\nLess or equal to another:', *(first_bicycle <= second_bicycle), sep='\n')
 
