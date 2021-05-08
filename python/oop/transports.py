@@ -10,7 +10,6 @@ class Transport(ABC):
     Base transport class
     """
     _number_of_wheels = 0
-    _possible_brands = tuple()
 
     def __init__(self,
                  *args):
@@ -88,14 +87,6 @@ class Transport(ABC):
         :return:
         """
         return cls._number_of_wheels
-
-    @classmethod
-    def get_brand(cls):
-        """
-        Getting static class attribute that shows brand
-        :return:
-        """
-        return cls._possible_brands
 
 
 class Engine:
@@ -842,22 +833,6 @@ class JetSki(Motorcycle):
                f'Weight: {self.weight} kilos\n' + f'Color: {self.color}\n' + \
                f'Brand: {self.brand}\n' + engine_chars
 
-    def parse_arguments(self, *args):
-        """
-        Parsing arguments to avoid pylint mistakes with too much arguments
-
-        :param args:
-        :return:
-        """
-        assert len(args) == 6
-        self.speed = args[0]
-        self.weight = args[1]
-        self.color = args[2]
-        self.brand = args[3]
-        self.power = args[4]
-        self.torque = args[5]
-        self.category = choice(self.get_category())
-
 
 if __name__ == '__main__':
     # something1 = Transport(45, 23.5, 'red')
@@ -873,7 +848,7 @@ if __name__ == '__main__':
     print(something5)
     something6 = JetSki(320, 72.5, 'yellow', 'sewqeqwe', 120.5, 150.2)
     print(something6)
-    # print(JetSki.__mro__)
+    # print(JetSki.__mro__)s
 
     # Property task
     print('Property checking in the JetSki Transport-inheritor:', something6.p_color)
