@@ -4,15 +4,25 @@ Task with iterables
 
 
 class SentenceIterator:
-    def __init__(self, words, sentence):
-        self.__words = words
+    """
+    Realizes IteratorProtocol
+    """
+    def __init__(self, sentence):
         self.__sentence = sentence
         self.counter = 0
 
     def __iter__(self):
+        """
+        Iter magic method realization for IteratorProtocol
+        :return: instance itself
+        """
         return self
 
     def __next__(self):
+        """
+        Next magic method realization for IteratorProtocol
+        :return: str
+        """
         if self.counter >= len(self.__sentence):
             raise StopIteration
         word = ''
@@ -31,7 +41,14 @@ class SentenceIterator:
 
 
 class Sentence:
+    """
+    Sentence class taken from given template
+    """
     def __init__(self, text: str):
+        """
+        Initialization instance of the Sentence
+        :param text: str
+        """
         if not isinstance(text, str):
             raise TypeError
         if text[-1] not in ('.', '?', '!'):
@@ -40,15 +57,32 @@ class Sentence:
         self.counter = 0
 
     def __repr__(self):
+        """
+        String representation of the instance
+        :return: str
+        """
         return f"<Sentence(words={len(self.words)}, other_chars={len(self.other_chars)})>"
 
     def __len__(self):
+        """
+        Return length of the sentence
+        :return:
+        """
         return len(self.__sentence)
 
     def __iter__(self):
-        return SentenceIterator(self.words, self.__sentence)
+        """
+        Returns iterator object - SentenceIterator
+        :return:
+        """
+        return SentenceIterator(self.__sentence)
 
     def __getitem__(self, item):
+        """
+        Slicing and indexing to take words from the words list (w/o other chars!)
+        :param item: index or slice
+        :return: str
+        """
         if isinstance(item, slice):
             return ' '.join(self.words[item])
         elif isinstance(item, int):
@@ -59,6 +93,10 @@ class Sentence:
             raise TypeError('Invalid argument type.')
 
     def _words(self):
+        """
+        Return lazy iterator (just words without other chars!)
+        :return: iterator
+        """
         if self.counter >= len(self.__sentence):
             raise StopIteration
         word = ''
@@ -76,10 +114,18 @@ class Sentence:
 
     @property
     def words(self):
+        """
+        Return list of the words in the sentence
+        :return: list
+        """
         return [word for word in self.__sentence.rstrip('!?.').split(' ') if len(word) > 1]
 
     @property
     def other_chars(self):
+        """
+        Returns list of the other chars in the sentence
+        :return: list
+        """
         return [word for word in self.__sentence.rstrip('!?.').split(' ') if len(word) == 1]
 
 
