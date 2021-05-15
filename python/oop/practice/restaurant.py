@@ -21,6 +21,7 @@ class Equipment:
                            'kitchen-tools': cooks}
         self.waiter_equip = {'uniform': waiters,
                              'waiter-tools': waiters}
+        # print('Equipment counted at the start of the day.')
 
 
 class Cook(ABC):
@@ -178,6 +179,7 @@ class Order:
             if wish in list(self.menu.keys()):
                 self.dishes.append(wish)
                 self.__amount += self.menu[wish]
+        print('Order was made and delivered to kitchen!')
 
     @classmethod
     def __increment_totals(cls):
@@ -226,7 +228,11 @@ class Waiter:
         """
         if client.make_order() is not None:
             wish, self.__tips = client.make_order()
-            return Order(wish)
+            print(f'\nClient is ordering ...')
+            order = Order(wish)
+            print(f'Client ordered on ${order.amount}.')
+            print(f'Waiter gained ${self.tips} tips.')
+            return order
         return None
 
     @property
@@ -252,6 +258,7 @@ class Client:
         """
         self.name: str = client_name
         self.__money: float = money
+        print(f'Client came to restaurant with ${money:.2f}.')
 
     def make_order(self):
         """
