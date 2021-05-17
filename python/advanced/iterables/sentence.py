@@ -1,14 +1,15 @@
 """
 Task with iterables
 """
+from string import ascii_letters as letters
 
 
 class SentenceIterator:
     """
     Realizes IteratorProtocol
     """
-    def __init__(self, sentence):
-        self.__sentence = sentence
+    def __init__(self, words):
+        self.words = words
         self.counter = 0
 
     def __iter__(self):
@@ -23,37 +24,31 @@ class SentenceIterator:
         Next magic method realization for IteratorProtocol
         :return: str
         """
-        if self.counter >= len(self.__sentence):
+        if self.counter >= len(self.words):
             raise StopIteration
-        word = ''
-        while self.counter < len(self.__sentence):
-            char = self.__sentence[self.counter]
-            if char not in ' !?.,:':
-                word += char
-            elif len(word) > 1:
-                self.counter += 1
-                if word != '':
-                    return word
-            else:
-                word = ''
+        while self.counter < len(self.words):
+            word = self.words[self.counter]
             self.counter += 1
-        raise StopIteration
+            return word
 
 
 class Sentence:
     """
     Sentence class taken from given template
     """
+    excluding = ' ()/\\\'"!?.,:'
+
     def __init__(self, text: str):
         """
         Initialization instance of the Sentence
         :param text: str
         """
         if not isinstance(text, str):
-            raise TypeError
-        if text[-1] not in ('.', '?', '!'):
-            raise ValueError
+            raise TypeError('Enter just strings!')
+        if text[-1] not in '.?!':
+            raise ValueError('Sentence must be completed (ends with !/?/.)')
         self.__sentence = text
+
         self.counter = 0
 
     def __repr__(self):
@@ -75,7 +70,7 @@ class Sentence:
         Returns iterator object - SentenceIterator
         :return:
         """
-        return SentenceIterator(self.__sentence)
+        return SentenceIterator(self.words)
 
     def __getitem__(self, item):
         """
@@ -97,12 +92,10 @@ class Sentence:
         Return lazy iterator (just words without other chars!)
         :return: iterator
         """
-        if self.counter >= len(self.__sentence):
-            raise StopIteration
         word = ''
         while self.counter < len(self):
             char = self.__sentence[self.counter]
-            if char not in ' !?.,:':
+            if char not in self.excluding:
                 word += char
             elif len(word) > 1:
                 self.counter += 1
@@ -111,6 +104,7 @@ class Sentence:
             else:
                 word = ''
             self.counter += 1
+        self.counter = 0
 
     @property
     def words(self):
@@ -118,7 +112,7 @@ class Sentence:
         Return list of the words in the sentence
         :return: list
         """
-        return [word for word in self.__sentence.rstrip('!?.').split(' ') if len(word) > 1]
+        return [word.strip(self.excluding) for word in self.__sentence.rstrip('!?.').split(' ') if len(word) > 1]
 
     @property
     def other_chars(self):
@@ -126,16 +120,22 @@ class Sentence:
         Returns list of the other chars in the sentence
         :return: list
         """
-        return [word for word in self.__sentence.rstrip('!?.').split(' ') if len(word) == 1]
+        return [char for char in self.__sentence if char not in letters and char != ' ']
 
 
 if __name__ == '__main__':
-    s = Sentence('Let\'s dance f absolute d any f!')
-    print(s)
+    s = Sentence('There is another statement (rule, point).')
     print(s._words())
-    print(next(s._words()))
+    print(s)
     print(s.words)
     print(s.other_chars)
+    print(next(s._words()))
+    print(next(s._words()))
+    print(next(s._words()))
+    print(next(s._words()))
+    print(next(s._words()))
+    print(next(s._words()))
+    print(list(s._words()))
     print(s[-1])
     print(s[0])
     print(s[1:3])
@@ -148,3 +148,9 @@ if __name__ == '__main__':
     print(next(sentence_iterator))
     print(next(sentence_iterator))
 
+    print('\nCreating another Sentence instance for check zeroing self.counter...')
+    f = Sentence('There is another.')
+    print('Counter:', f.counter)
+    print(next(f._words()))
+    print(next(f._words()))
+    print(f.words)
