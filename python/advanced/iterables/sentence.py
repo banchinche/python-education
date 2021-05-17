@@ -1,7 +1,7 @@
 """
 Task with iterables
 """
-from string import ascii_letters as letters
+from string import ascii_letters as letters, punctuation
 
 
 class SentenceIterator:
@@ -36,7 +36,7 @@ class Sentence:
     """
     Sentence class taken from given template
     """
-    excluding = ' ()/\\\'"!?.,:'
+    excluding = punctuation + ' '
 
     def __init__(self, text: str):
         """
@@ -112,7 +112,7 @@ class Sentence:
         Return list of the words in the sentence
         :return: list
         """
-        return [word.strip(self.excluding) for word in self.__sentence.rstrip('!?.').split(' ') if len(word) > 1]
+        return [word.strip(self.excluding) for word in self.__sentence.rstrip('!?.').split(' ')]
 
     @property
     def other_chars(self):
@@ -135,7 +135,6 @@ if __name__ == '__main__':
     print(next(s._words()))
     print(next(s._words()))
     print(next(s._words()))
-    print(list(s._words()))
     print(s[-1])
     print(s[0])
     print(s[1:3])
