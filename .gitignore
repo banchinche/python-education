@@ -1,2 +1,6 @@
 .idea
 .DS_Store
+.pytest_cache
+python/unittesting/software_testing/__pycache__
+python/unittesting/tests/__pycache__
+python/unittesting/tests/unit/__pycache__
