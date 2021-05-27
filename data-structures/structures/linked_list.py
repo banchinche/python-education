@@ -1,23 +1,49 @@
+"""
+Linked list realization module
+"""
 from typing import Optional
 
 
 class LinkedList:
+    """
+    Linked list class
+    """
     class Node:
-        def __init__(self, value=None, next_value=None):
+        """
+        Node class
+        """
+        def __init__(self, value=None, next_value=None) -> None:
+            """
+            Initializes node instance
+            :param value: None or smth
+            :param next_value: None or smth
+            """
             self.value = value
             self.next_value = next_value
 
-        def __str__(self):
+        def __str__(self) -> str:
+            """
+            str magic method for showing node value
+            :return: str
+            """
             return f'{self.value}'
 
-    def __init__(self, nodes=None):
+    def __init__(self, nodes=None) -> None:
+        """
+        Initializing linked list instance
+        :param nodes: all nodes in list
+        """
         self._head = None
         self._tail = None
         if nodes:
             for node in nodes:
                 self.append(node)
 
-    def __str__(self):
+    def __str__(self) -> str:
+        """
+        str magic method to show all linked list
+        :return: str
+        """
         node = self._head
         nodes = ''
         while node.value:
@@ -27,7 +53,11 @@ class LinkedList:
                 break
         return nodes.strip(' ,')
 
-    def __len__(self):
+    def __len__(self) -> int:
+        """
+        Shows length of the linked list
+        :return: int
+        """
         count = 0
         current_node = self._head
         while current_node:
@@ -37,7 +67,12 @@ class LinkedList:
                 break
         return count
 
-    def append(self, node: Optional):
+    def append(self, node) -> None:
+        """
+        Appends node to linked list (end)
+        :param node: it could be any type to store
+        :return: None
+        """
         node = self.Node(node)
         if self._head is None:
             self._head = node
@@ -47,7 +82,12 @@ class LinkedList:
             last_node.next_value = node
             self._tail = node
 
-    def prepend(self, node: Optional):
+    def prepend(self, node) -> None:
+        """
+        Prepends node to list (begin)
+        :param node: it could be any type to store
+        :return: None
+        """
         node = self.Node(node)
         if self._head is None:
             self._head = node
@@ -56,7 +96,12 @@ class LinkedList:
             node.next_value = self._head
             self._head = node
 
-    def lookup(self, value):
+    def lookup(self, value) -> Optional[str, int]:
+        """
+        Shows index of the node in list
+        :param value:
+        :return: str or int
+        """
         if self.head is None:
             return 'List is empty.'
         current = self._head
@@ -71,7 +116,13 @@ class LinkedList:
         else:
             print('Not in list.', end=' ')
 
-    def insert(self, value, index):
+    def insert(self, value, index) -> None:
+        """
+        Inserts node to list at index position
+        :param value: it could be any type to store
+        :param index: int
+        :return: None
+        """
         if index > len(self):
             raise IndexError('Index is out of range!')
         if index == 0:
@@ -86,7 +137,12 @@ class LinkedList:
                 count += 1
                 current = current.next_value
 
-    def delete(self, index):
+    def delete(self, index) -> None:
+        """
+        Deletes node from list
+        :param index: index of the node in list
+        :return: None
+        """
         if index > len(self):
             raise IndexError('Index is out of range!')
         if index == 0:
@@ -103,11 +159,19 @@ class LinkedList:
                 current = current.next_value
 
     @property
-    def head(self):
+    def head(self) -> Node:
+        """
+        Returns head of the linked list
+        :return: head node of the list
+        """
         return self._head
 
     @property
-    def tail(self):
+    def tail(self) -> Node:
+        """
+        Returns head of the linked list
+        :return: tail of the list
+        """
         return self._tail
 
 
