@@ -1,6 +1,7 @@
 """
 Stack realization module
 """
+from typing import Union, Any
 from linked_list import LinkedList
 
 
@@ -8,7 +9,7 @@ class Stack(LinkedList):
     """
     Stack class
     """
-    def __init__(self, values) -> None:
+    def __init__(self, values: Union[None, list, tuple]) -> None:
         """
         Initializes stack instance
         :param values: nodes
@@ -29,7 +30,7 @@ class Stack(LinkedList):
         """
         return super(Stack, self).__str__()
 
-    def push(self, value) -> None:
+    def push(self, value: Any) -> None:
         """
         Pushes node to the stack
         :param value: node

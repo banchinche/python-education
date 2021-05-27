@@ -1,7 +1,7 @@
 """
 Linked list realization module
 """
-from typing import Optional
+from typing import Union, Any
 
 
 class LinkedList:
@@ -67,7 +67,7 @@ class LinkedList:
                 break
         return count
 
-    def append(self, node) -> None:
+    def append(self, node: Union[None, Node]) -> None:
         """
         Appends node to linked list (end)
         :param node: it could be any type to store
@@ -82,7 +82,7 @@ class LinkedList:
             last_node.next_value = node
             self._tail = node
 
-    def prepend(self, node) -> None:
+    def prepend(self, node: Union[None, Node]) -> None:
         """
         Prepends node to list (begin)
         :param node: it could be any type to store
@@ -96,10 +96,10 @@ class LinkedList:
             node.next_value = self._head
             self._head = node
 
-    def lookup(self, value) -> Optional[str, int]:
+    def lookup(self, value: Any) -> Union[str, int]:
         """
         Shows index of the node in list
-        :param value:
+        :param value: any
         :return: str or int
         """
         if self.head is None:
@@ -116,7 +116,7 @@ class LinkedList:
         else:
             print('Not in list.', end=' ')
 
-    def insert(self, value, index) -> None:
+    def insert(self, value: Any, index: int) -> None:
         """
         Inserts node to list at index position
         :param value: it could be any type to store
@@ -137,7 +137,7 @@ class LinkedList:
                 count += 1
                 current = current.next_value
 
-    def delete(self, index) -> None:
+    def delete(self, index: int) -> None:
         """
         Deletes node from list
         :param index: index of the node in list

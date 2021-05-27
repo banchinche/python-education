@@ -1,19 +1,41 @@
-class Tree:
-    """Class realized methods for Tree"""
-    class Node:
-        """class to represent each node of the Tree"""
+"""
+Tree realization module
+"""
+from typing import Union
 
-        def __init__(self, value):
+
+class Tree:
+    """
+    Class realized methods for Tree
+    """
+    class Node:
+        """
+        Class to represent each node of the Tree
+        """
+        def __init__(self, value: int) -> None:
+            """
+            Initialization node instance
+            :param value: it will be stored in this node
+            """
             self.left = None
             self.data = value
             self.right = None
 
-    def create_node(self, data):
-        """function to create a node"""
+    def create_node(self, data: int) -> Node:
+        """
+        Function to create a node
+        :param data: value in node
+        :return: Node itself
+        """
         return self.Node(data)
 
-    def insert(self, node, data):
-        """Insert function will insert a node into tree"""
+    def insert(self, node: Union[Node, None], data: int) -> Node:
+        """
+        Insert function will insert a node into tree
+        :param node: node
+        :param data: to check node value
+        :return: Node
+        """
         if node is None:
             return self.create_node(data)
         if data < node.data:
@@ -22,8 +44,13 @@ class Tree:
             node.right = self.insert(node.right, data)
         return node
 
-    def delete_node(self, node, data):
-        """Delete function will delete a node into tree"""
+    def delete_node(self, node: Node, data: int) -> Union[None, Node]:
+        """
+        Delete function will delete a node into tree
+        :param node: node
+        :param data: to check node value
+        :return: None or Node
+        """
         if node is None:
             return None
         if data < node.data:
@@ -43,8 +70,13 @@ class Tree:
                 return temp
         return node
 
-    def search(self, node, data):
-        """Search function will search a node into tree"""
+    def search(self, node: Node, data: int) -> Union[None, Node]:
+        """
+        Search function will search a node into tree
+        :param node: node
+        :param data: to check node value
+        :return: None or Node
+        """
         if node is None or node.data == data:
             return node
         if node.data < data:
@@ -52,26 +84,38 @@ class Tree:
         else:
             return self.search(node.left, data)
 
-    def traverse_in_order(self, t_root):
-        """shows the trunk for all branches"""
-        if t_root is not None:
-            self.traverse_in_order(t_root.left)
-            print(t_root.data)
-            self.traverse_in_order(t_root.right)
+    def traverse_in_order(self, _root: Node) -> None:
+        """
+        Traverses tree in order
+        :param _root: initial node
+        :return: None
+        """
+        if _root is not None:
+            self.traverse_in_order(_root.left)
+            print(_root.data)
+            self.traverse_in_order(_root.right)
 
-    def traverse_pre_order(self, p_root):
-        """traverse function will print all tree in order of nesting"""
-        if p_root is not None:
-            print(p_root.data)
-            self.traverse_pre_order(p_root.left)
-            self.traverse_pre_order(p_root.right)
+    def traverse_pre_order(self, _root: Node) -> None:
+        """
+        Traverses tree in order of nesting
+        :param _root: initial node
+        :return: None
+        """
+        if _root is not None:
+            print(_root.data)
+            self.traverse_pre_order(_root.left)
+            self.traverse_pre_order(_root.right)
 
-    def traverse_post_order(self, po_root):
-        """traverse function will print all the node in the tree in reverse order"""
-        if po_root is not None:
-            self.traverse_post_order(po_root.left)
-            self.traverse_post_order(po_root.right)
-            print(po_root.data)
+    def traverse_post_order(self, _root: Node) -> None:
+        """
+        Traverses tree in reverse order
+        :param _root: initial node
+        :return: None
+        """
+        if _root is not None:
+            self.traverse_post_order(_root.left)
+            self.traverse_post_order(_root.right)
+            print(_root.data)
 
 
 if __name__ == '__main__':

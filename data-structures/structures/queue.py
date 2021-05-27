@@ -1,6 +1,7 @@
 """
 Queue realization module
 """
+from typing import Union, Any
 from linked_list import LinkedList
 
 
@@ -8,7 +9,7 @@ class Queue(LinkedList):
     """
     Queue class
     """
-    def __init__(self, values) -> None:
+    def __init__(self, values: Union[None, list, tuple]) -> None:
         """
         Initialization of the queue instance
         :param values: nodes
@@ -29,7 +30,7 @@ class Queue(LinkedList):
         """
         return super(Queue, self).__str__()
 
-    def enqueue(self, value) -> None:
+    def enqueue(self, value: Any) -> None:
         """
         Appends node to the queue
         :param value: node

@@ -1,18 +1,44 @@
+"""
+Hash-table realization module
+"""
+from typing import Union, Any
+
+
 class HashTable:
+    """
+    Hash-table class
+    """
     BASE_MAX_SIZE = 100
 
     class Node:
-        def __init__(self, key, value=None, next_value=None):
+        """
+        Node class
+        """
+        def __init__(self, key: int, value=None, next_value=None) -> None:
+            """
+            Initialization of the node instance
+            :param key: key
+            :param value: None or smth
+            :param next_value: node
+            """
             self.key = key
             self.value = value
             self.next_value = next_value
 
-    def __init__(self):
+    def __init__(self) -> None:
+        """
+        Initialization of the hash-table instance
+        """
         self.capacity = self.BASE_MAX_SIZE
         self.size = 0
         self.values = [None] * self.capacity
 
-    def hash(self, key):
+    def hash(self, key: int) -> int:
+        """
+        Hash function
+        :param key: key to compute hash
+        :return: hash - int
+        """
         if isinstance(key, str):
             _hash = 0
             for idx, c in enumerate(key):
@@ -22,11 +48,13 @@ class HashTable:
         elif isinstance(key, int):
             return key % self.capacity
 
-    # Insert a key,value pair to the hashtable
-    # Input:  key - string
-    # 		  value - anything
-    # Output: void
-    def insert(self, key, value):
+    def insert(self, key: Union[str, int], value: Any) -> None:
+        """
+        Inserting value to table
+        :param key: key to compute hash
+        :param value: new node
+        :return:
+        """
         self.size += 1
         index = self.hash(key)
         node = self.values[index]
@@ -39,10 +67,12 @@ class HashTable:
             node = node.next_value
         prev.next_value = self.Node(key, value)
 
-    # Find a data value based on key
-    # Input:  key - string
-    # Output: value stored under "key" or None if not found
-    def find(self, key):
+    def find(self, key: Union[str, int]) -> Union[None, list]:
+        """
+        Finds data value based on hash from key
+        :param key: key to find hash-index
+        :return: list or None
+        """
         index = self.hash(key)
         node = self.values[index]
         if node is None:
@@ -56,10 +86,12 @@ class HashTable:
                     break
             return nodes
 
-    # Remove node stored at key
-    # Input:  key - string
-    # Output: removed data value or None if not found
-    def remove(self, key):
+    def remove(self, key: int) -> Any:
+        """
+        Removes nodes stored at key and returns them
+        :param key: key to find hash-index
+        :return: None or Node
+        """
         index = self.hash(key)
         node = self.values[index]
         prev = None
