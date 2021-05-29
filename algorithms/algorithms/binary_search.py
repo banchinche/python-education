@@ -20,7 +20,7 @@ def binary_search(sequence: Sequence, value: int) -> Union[int, str]:
             last = middle - 1
         else:
             return middle
-    return 'There is not such element!'
+    return 'There is no such element!'
 
 
 arr = [2, 3, 4, 10, 40]
