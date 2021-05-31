@@ -67,13 +67,13 @@ class LinkedList:
                 break
         return count
 
-    def append(self, node: Union[None, Node]) -> None:
+    def append(self, value: Any) -> None:
         """
         Appends node to linked list (end)
-        :param node: it could be any type to store
+        :param value: it could be any type to store
         :return: None
         """
-        node = self.Node(node)
+        node = self.Node(value)
         if self._head is None:
             self._head = node
             self._tail = node
@@ -82,13 +82,13 @@ class LinkedList:
             last_node.next_value = node
             self._tail = node
 
-    def prepend(self, node: Union[None, Node]) -> None:
+    def prepend(self, value: Any) -> None:
         """
         Prepends node to list (begin)
-        :param node: it could be any type to store
+        :param value: it could be any type to store
         :return: None
         """
-        node = self.Node(node)
+        node = self.Node(value)
         if self._head is None:
             self._head = node
             self._tail = node
