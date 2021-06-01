@@ -1,8 +1,7 @@
 """
 Here is the main logic of the game
 """
-from player import Player
-from typing import Union
+from player import Player, Human, Bot
 from constants import EMPTY_MARK, X_MARK, O_MARK, TIE_MARK
 
 
@@ -24,7 +23,7 @@ class TicTacToe:
                      (0, 4, 8),
                      (2, 4, 6))
 
-    def __init__(self, player1: Player, player2: Player):
+    def __init__(self, player1: Human = None, player2: Human = None, bot: Bot = None) -> None:
         """
         Initializing players and board
         :param player1: Player
@@ -37,6 +36,7 @@ class TicTacToe:
         self.current_turn = self.X
         self.first_player = player1
         self.second_player = player2
+        self.bot = bot
 
     def print_board(self) -> None:
         """
@@ -52,6 +52,10 @@ class TicTacToe:
         print(f'\t {cell[6]} | {cell[7]} | {cell[8]} \t\t 6 | 7 | 8')
 
     def possible_moves(self) -> None:
+        """
+        Computes all possible moves based on EMPTY mark or not
+        :return: None
+        """
         possible = list()
         for cell in range(self.BOARD_SIZE):
             if self.board[cell] == self.EMPTY:
@@ -68,11 +72,10 @@ class TicTacToe:
         for win in self.WIN_CONDITION:
             if self.board[win[0]] == self.board[win[1]] == self.board[win[2]] != self.EMPTY:
                 winner = self.board[win[0]]
-                print(f'{winner} is winner!')
                 return winner
 
     @staticmethod
-    def make_choice() -> int:
+    def make_choice(player) -> int:
         """
         Choosing number of the cell
         :return: int
@@ -80,24 +83,28 @@ class TicTacToe:
         response = None
         while response not in range(9):
             try:
-                response = int(input('Enter cell number (0-8): '))
+                response = int(input(f'{player.name}\'s turn now ({player.player_side}).\n'
+                                     f'Enter cell number (0-8): '))
             except ValueError:
                 pass
         return response
 
-    def make_move(self) -> int:
+    def make_move(self, player: Player, cell=None) -> None:
         """
-        Check if cell is already occupied and return its number
-        :return: int
+        Makes move on the board as given player
+        :return: None
         """
         self.possible_moves()
-        move = None
-        while move not in self.possible:
-            move = self.make_choice()
-            if move not in self.possible:
-                print('\nThat square is already occupied. Choose another.\n')
+        if cell is None:
+            move = None
+            while move not in self.possible:
+                move = self.make_choice(player)
+                if move not in self.possible:
+                    print('\nThat square is already occupied. Choose another.\n')
+            self.board[move] = player.player_side
+        else:
+            self.board[cell] = player.player_side
         self.next_turn()
-        return move
 
     def next_turn(self) -> None:
         """
@@ -109,6 +116,54 @@ class TicTacToe:
         else:
             self.current_turn = self.X
 
+    def bot_move(self) -> int:
+        """
+        Makes bot move (return index on the board)
+        :return: int
+        """
+        best_score = -10
+        self.possible_moves()
+        for cell in self.possible:
+            self.board[cell] = self.bot.side
+            score = self.minimax(False)
+            self.board[cell] = self.EMPTY
+            if score > best_score:
+                best_score = score
+                best_move = cell
+        return best_move
+
+    def minimax(self, maximize: bool) -> int:
+        """
+        Returns integer score of certain move
+        :param maximize: boolean parameter for recursive call
+        :return: int
+        """
+        if self.determine_winner() == self.bot.side:
+            return 10
+        elif self.determine_winner() == self.first_player.side:
+            return -10
+        elif self.determine_winner() == self.TIE:
+            return 0
+        self.possible_moves()
+        if maximize:
+            best_score = -10
+            for cell in self.possible:
+                self.board[cell] = self.bot.side
+                score = self.minimax(False)
+                self.board[cell] = self.EMPTY
+                if score > best_score:
+                    best_score = score
+            return best_score
+        else:
+            best_score = 10
+            for cell in self.possible:
+                self.board[cell] = self.first_player.side
+                score = self.minimax(True)
+                self.board[cell] = self.EMPTY
+                if score < best_score:
+                    best_score = score
+            return best_score
+
     @staticmethod
     def ask_for_more() -> str:
         """
@@ -119,3 +174,12 @@ class TicTacToe:
         while response not in ('y', 'n'):
             response = input('Would you like to play more as these players?\n: ').lower()
         return response
+
+    @staticmethod
+    def sides() -> tuple:
+        """
+        Based on choice, returns sides of players
+        :return: tuple of strings
+        """
+        player_side = input('Enter player\'s side(X / O): ').upper()
+        return player_side, TicTacToe.X if player_side == TicTacToe.O else TicTacToe.O
