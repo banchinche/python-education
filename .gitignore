@@ -1,6 +1,10 @@
 .idea
 .DS_Store
 .pytest_cache
+python/unittesting/software_testing/__pycache__
+python/unittesting/tests/__pycache__
+python/unittesting/tests/unit/__pycache__
+python/tic-tac-toe/__pycache__/
 python/tic-tac-toe/__pycache__/
 algorithms/algorithms/__pycache__/
 algorithms/tests/__pycache__/
