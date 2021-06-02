@@ -2,7 +2,7 @@
 Stack realization module
 """
 from typing import Union, Any
-from linked_list import LinkedList
+from structures.linked_list import LinkedList
 
 
 class Stack(LinkedList):
@@ -53,14 +53,3 @@ class Stack(LinkedList):
         :return: node
         """
         return self.head
-
-
-if __name__ == '__main__':
-    stack1 = Stack([2, 4, 5])
-    print(stack1)
-    print(stack1.peek())
-    stack1.push(22)
-    print(stack1)
-    print(len(stack1))
-    print(stack1.pop())
-

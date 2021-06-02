@@ -173,29 +173,3 @@ class LinkedList:
         :return: tail of the list
         """
         return self._tail
-
-
-if __name__ == '__main__':
-    linked1 = LinkedList([2, 3, 4])
-    print(linked1)
-    print(linked1.head, linked1.tail)
-    print(len(linked1))
-    linked1.append(8)
-    print(linked1)
-    print(linked1.head, linked1.tail)
-    print(len(linked1))
-    linked1.prepend(6)
-    print(linked1)
-    linked1.prepend(1)
-    print(linked1)
-    linked1.insert(22, 3)
-    linked1.insert(44, 0)
-    linked1.insert(66, 8)
-    print(linked1)
-    linked1.delete(0)
-    print(linked1)
-    linked1.delete(3)
-    print(linked1)
-    linked1.delete(6)
-    print(linked1)
-    print(linked1.head, linked1.tail)

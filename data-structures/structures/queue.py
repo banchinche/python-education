@@ -2,7 +2,7 @@
 Queue realization module
 """
 from typing import Union, Any
-from linked_list import LinkedList
+from structures.linked_list import LinkedList
 
 
 class Queue(LinkedList):
@@ -53,19 +53,3 @@ class Queue(LinkedList):
         :return: node
         """
         return self.head
-
-
-if __name__ == '__main__':
-    queque1 = Queue([2, 3, 4])
-    print(queque1)
-    print(len(queque1))
-    print(queque1.dequeue())
-    print(queque1)
-    queque1.enqueue(7)
-    print(queque1.peek())
-    print(queque1)
-    print(queque1.dequeue())
-    print(queque1.dequeue())
-
-
-

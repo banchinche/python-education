@@ -7,3 +7,5 @@ python/tic-tac-toe/__pycache__/
 algorithms/algorithms/__pycache__/
 algorithms/tests/__pycache__/
 algorithms/tests/units/__pycache__/
+data-structures/tests/__pycache__/
+data-structures/tests/units/__pycache__/
