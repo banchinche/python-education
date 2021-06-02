@@ -26,13 +26,14 @@ Follow such rules, pick one of the unused cell, according to this board:
     6 | 7 | 8
 
 1 - start game (2 humans)
-2 - history of the games
-3 - quit
+2 - play vs Computer
+3 - history of the games
+4 - quit
         """)
         while True:
             try:
                 choice = int(input('Enter value from menu: '))
-                if choice not in [1, 2, 3]:
+                if choice not in [1, 2, 3, 4]:
                     raise ValueError
             except ValueError:
                 continue
