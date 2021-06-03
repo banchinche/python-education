@@ -2,6 +2,7 @@
 Hash-table realization module
 """
 from typing import Union, Any
+from structures.linked_list import LinkedList
 
 
 class HashTable:
@@ -31,7 +32,9 @@ class HashTable:
         """
         self.capacity = self.BASE_MAX_SIZE
         self.size = 0
-        self.values = [None] * self.capacity
+        self.list = LinkedList()
+        for _ in range(self.capacity):
+            self.list.append(LinkedList())
 
     def hash(self, key: int) -> int:
         """
@@ -48,80 +51,34 @@ class HashTable:
         elif isinstance(key, int):
             return key % self.capacity
 
-    def insert(self, key: Union[str, int], value: Any) -> None:
+    def insert(self, key: Union[int, str], value: Any) -> None:
         """
-        Inserting value to table
-        :param key: key to compute hash
-        :param value: new node
-        :return:
-        """
-        self.size += 1
-        index = self.hash(key)
-        node = self.values[index]
-        if node is None:
-            self.values[index] = self.Node(key, value)
-            return
-        prev = node
-        while node is not None:
-            prev = node
-            node = node.next_value
-        prev.next_value = self.Node(key, value)
-
-    def find(self, key: Union[str, int]) -> Union[None, list]:
-        """
-        Finds data value based on hash from key
-        :param key: key to find hash-index
-        :return: list or None
+        Inserts value to hash-table with certain key
+        :param key: int or str
+        :param value: Any
+        :return: None
         """
         index = self.hash(key)
-        node = self.values[index]
-        if node is None:
-            return None
-        else:
-            nodes = []
-            while node.value:
-                nodes.append(node.value)
-                node = node.next_value
-                if not node:
-                    break
-            return nodes
+        self.list[index].value.append(value)
 
-    def remove(self, key: int) -> Any:
+    def lookup(self, key: Union[int, str]) -> LinkedList:
         """
-        Removes nodes stored at key and returns them
-        :param key: key to find hash-index
-        :return: None or Node
+        Returns LinkedList with certain key in hash-table
+        :param key: int or str
+        :return: LinkedList
         """
         index = self.hash(key)
-        node = self.values[index]
-        prev = None
-        while node is not None and node.key != key:
-            prev = node
-            node = node.next_value
-        if node is None:
-            return None
-        else:
-            self.size -= 1
-            result = node.value
-            if prev is None:
-                self.values[index] = node.next_value
-            else:
-                prev.next_value = prev.next_value.next_value
-            return result
+        return self.list[index]
 
-
-if __name__ == '__main__':
-    ht = HashTable()
-    ht.insert(52, 12456)
-    ht.insert(52, 234)
-    ht.insert(53, 3213)
-    ht.insert('41', '21313')
-    ht.insert('52', 777)
-    print(ht.find(52))
-    print(ht.find('52'))
-    print(ht.find(53))
-    print(ht.remove(52))
-    print(ht.remove(52))
-
-
-
+    def delete(self, key: Union[int, str], value=None) -> None:
+        """
+        Deletes value in hash-table with certain key
+        :param key: int or str
+        :param value: Any
+        :return: None
+        """
+        index = self.hash(key)
+        if value is None:
+            self.list.delete(index)
+        value_index = self.list[index].value.lookup(value)
+        self.list[index].value.delete(value_index)

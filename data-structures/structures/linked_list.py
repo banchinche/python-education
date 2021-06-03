@@ -67,6 +67,24 @@ class LinkedList:
                 break
         return count
 
+    def __getitem__(self, key):
+        count = -len(self) if key < 0 else 0
+        current = self._head
+        while current:
+            if count == key:
+                return current
+            else:
+                count += 1
+            current = current.next_value
+            if current is None:
+                raise AttributeError('Out of range of the list!')
+
+    def __iter__(self):
+        node = self._head
+        while node:
+            yield node.value
+            node = node.next_value
+
     def append(self, value: Any) -> None:
         """
         Appends node to linked list (end)
