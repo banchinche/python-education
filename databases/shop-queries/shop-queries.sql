@@ -27,3 +27,10 @@ SELECT * FROM orders WHERE order_status_id IN (1, 2, 3) AND updated_at < '01/01/
 -- 6) select all created carts without order (cancelled)
 SELECT * FROM carts WHERE cart_id IN
    (SELECT cart_id FROM carts EXCEPT SELECT ord.cart_id  FROM orders ord);
+
+-- Task 2.4
+-- 1) average sum of all finished orders
+SELECT AVG(total) AS average_sum  FROM orders WHERE order_status_id = 4;
+-- 2) maximum sum of order by 3rd quarter of the 2020
+SELECT MAX(total) AS max_total FROM orders WHERE created_at BETWEEN '07/01/2020' AND '10/01/2020';
+SELECT * FROM orders WHERE created_at BETWEEN '07/01/2020' AND '09/30/2020';
