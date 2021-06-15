@@ -64,7 +64,7 @@ SELECT u.user_id, u.first_name, SUM(o.total) FROM users u
 	INNER JOIN carts c ON u.user_id = c.cart_id
  	INNER JOIN orders o ON o.cart_id = c.cart_id
 	INNER JOIN order_status os ON os.order_status_id = o.order_status_id
-WHERE os.order_status_id <> 4
+WHERE os.order_status_id = 4
 GROUP BY u.user_id
 ORDER BY SUM(o.total) DESC
 LIMIT 5;
@@ -76,11 +76,10 @@ GROUP BY u.user_id
 ORDER BY COUNT(o.order_id) DESC
 LIMIT 5;
 -- 7) show top 5 users with carts but no order (highest total)
-SELECT u.user_id, u.first_name, SUM(o.total) FROM users u
-	INNER JOIN carts c ON u.user_id = c.cart_id
-	INNER JOIN orders o ON o.cart_id = c.cart_id
-	INNER JOIN order_status os ON os.order_status_id = o.order_status_id
-WHERE os.order_status_id = 4
-GROUP BY u.user_id
+SELECT u.user_id, u.first_name, o.order_id, SUM(o.total) FROM users u
+INNER JOIN carts c ON u.user_id = c.cart_id
+INNER JOIN orders o ON o.cart_id = c.cart_id
+WHERE o.order_status_id IS null OR o.order_status_id NOT IN (1, 2, 3, 4, 5)
+GROUP BY u.user_id, o.order_id
 ORDER BY SUM(o.total) DESC
 LIMIT 5;
