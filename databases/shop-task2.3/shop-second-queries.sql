@@ -76,10 +76,10 @@ GROUP BY u.user_id
 ORDER BY COUNT(o.order_id) DESC
 LIMIT 5;
 -- 7) show top 5 users with carts but no order (highest total)
-SELECT u.user_id, u.first_name, o.order_id, SUM(o.total) FROM users u
-INNER JOIN carts c ON u.user_id = c.cart_id
-INNER JOIN orders o ON o.cart_id = c.cart_id
-WHERE o.order_status_id IS null OR o.order_status_id NOT IN (1, 2, 3, 4, 5)
-GROUP BY u.user_id, o.order_id
-ORDER BY SUM(o.total) DESC
+SELECT u.user_id, u.first_name, SUM(c.total) AS usr_total_order_sum FROM carts c
+	LEFT JOIN orders o ON c.cart_id = o.cart_id
+	INNER JOIN users u ON c.cart_id = u.user_id
+	WHERE o.cart_id IS NULL
+GROUP BY u.user_id
+ORDER BY usr_total_order_sum DESC
 LIMIT 5;
