@@ -2,8 +2,13 @@
 CREATE OR REPLACE PROCEDURE insert_category(cat_id INT, cat_title VARCHAR, cat_desc TEXT)
 LANGUAGE plpgsql
 AS $$
+DECLARE
+	categories_count INT;
 BEGIN
-	IF cat_id >= (SELECT COUNT(*) FROM categories) THEN
+	SELECT COUNT(*)
+	INTO categories_count
+	FROM categories;
+	IF cat_id <= categories_count THEN
 		RAISE EXCEPTION 'Duplicate key value %', cat_id;
 		ROLLBACK;
 	ELSE
@@ -27,21 +32,21 @@ COMMIT;
 
 -- 2.2) loop usage in procedure (inserts product id's to certain cart)
 CREATE OR REPLACE PROCEDURE insert_products_to_cart(cart_num INT, prod_low INT, prod_high INT)
-LANGUAGE plpgsql
-AS $$
-BEGIN
-	FOR i IN prod_low..prod_high LOOP
-		INSERT INTO cart_product
-		VALUES (cart_num, i);
-  	END LOOP;
-	COMMIT;
-END;
-$$;
+ LANGUAGE plpgsql
+ AS $$
+ BEGIN
+ 	FOR i IN prod_low..prod_high LOOP
+ 		INSERT INTO cart_product
+ 		VALUES (cart_num, i);
+   	END LOOP;
+ 	COMMIT;
+ END;
+ $$;
 
--- checking queries
-CALL insert_products_to_cart(60, 20, 25);
-DROP PROCEDURE insert_products_to_cart;
+ -- checking queries
+ CALL insert_products_to_cart(60, 20, 25);
+ DROP PROCEDURE insert_products_to_cart;
 
-SELECT * FROM cart_product
-WHERE cart_id = 60
-ORDER BY product_id ASC;
+ SELECT * FROM cart_product
+ WHERE cart_id = 60
+ ORDER BY product_id ASC;
