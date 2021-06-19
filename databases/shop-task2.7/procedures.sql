@@ -32,21 +32,24 @@ COMMIT;
 
 -- 2.2) loop usage in procedure (inserts product id's to certain cart)
 CREATE OR REPLACE PROCEDURE insert_products_to_cart(cart_num INT, prod_low INT, prod_high INT)
- LANGUAGE plpgsql
- AS $$
- BEGIN
- 	FOR i IN prod_low..prod_high LOOP
- 		INSERT INTO cart_product
- 		VALUES (cart_num, i);
-   	END LOOP;
- 	COMMIT;
- END;
- $$;
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- doesn't work !!!
+ 	SELECT cart_num, generate_series(prod_low, prod_high) AS product_id
+ 	FROM generate_series(1, prod_high - prod_low) AS ser_prods;
+	INSERT INTO cart_product (cart_id, product_id)
+	SELECT cart_num, product_id FROM ser_prods;
+	COMMIT;
+END;
+$$;
 
- -- checking queries
- CALL insert_products_to_cart(60, 20, 25);
- DROP PROCEDURE insert_products_to_cart;
+-- checking queries
+BEGIN;
+CALL insert_products_to_cart(40, 20, 25);
+DROP PROCEDURE insert_products_to_cart;
 
- SELECT * FROM cart_product
- WHERE cart_id = 60
- ORDER BY product_id ASC;
+SELECT * FROM cart_product
+WHERE cart_id = 40
+ORDER BY product_id ASC;
+ROLLBACK;
