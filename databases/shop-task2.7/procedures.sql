@@ -34,12 +34,16 @@ COMMIT;
 CREATE OR REPLACE PROCEDURE insert_products_to_cart(cart_num INT, prod_low INT, prod_high INT)
 LANGUAGE plpgsql
 AS $$
+DECLARE
+	insert_query VARCHAR := 'INSERT INTO cart_product VALUES ';
+	temp_varchar VARCHAR := '';
 BEGIN
-    -- doesn't work !!!
- 	SELECT cart_num, generate_series(prod_low, prod_high) AS product_id
- 	FROM generate_series(1, prod_high - prod_low) AS ser_prods;
-	INSERT INTO cart_product (cart_id, product_id)
-	SELECT cart_num, product_id FROM ser_prods;
+	FOR i IN prod_low..prod_high LOOP
+		temp_varchar := '(' || CAST(cart_num AS VARCHAR) || ', ' || CAST(i AS VARCHAR) || '), ';
+		insert_query := insert_query || temp_varchar;
+	END LOOP;
+	insert_query := left(insert_query, -2) || ';';
+	EXECUTE insert_query;
 	COMMIT;
 END;
 $$;
