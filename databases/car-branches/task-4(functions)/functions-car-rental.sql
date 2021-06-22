@@ -1,7 +1,7 @@
 -- function with cursor and loop
 CREATE OR REPLACE FUNCTION customer_six_house(customer_name VARCHAR)
 RETURNS TEXT
-LANGUAGE plpgsql
+LANGUAGE PLPGSQL
 AS $$
 DECLARE
 results TEXT DEFAULT '';
